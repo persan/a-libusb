@@ -1,0 +1,12 @@
+library project Usb is
+
+   type Kind_Type is ("static", "relocatable");
+   Kind : Kind_Type := external ("LIBRARY_TYPE", "static");
+
+   for Library_Name use "usb_ada";
+   for Source_Dirs use ("../../include/usb-ada");
+   for Library_dir use  "../usb-ada/" & Kind;
+   for Externally_Built use "True";
+
+end Usb;
+

@@ -1,0 +1,30 @@
+project Usb is
+
+   type Kind_Type is ("static", "relocatable");
+   Kind : Kind_Type := external ("LIBRARY_TYPE", "static");
+
+   Version := "1.0.0";
+
+   for Object_Dir use ".obj/" & Kind;
+   for Source_Dirs use (".", "src");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-j0", "-k");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatwa", "-O2", "-gnat12", "-gnatf", "-gnatQ", "-fstack-check", "-gnato");
+   end Compiler;
+
+   for Library_Name use "usb_ada";
+   for Library_Dir use "lib/usb-ada/" & Kind;
+   for Library_Kind use kind;
+   case kind is
+      when "relocatable" =>
+         for Library_Interface use ("usb");
+         for Library_Version use "lib" & project'Library_Name & "." & Version & ".so";
+      when "static" =>
+         null;
+   end case;
+end Usb;
+
